@@ -1,9 +1,19 @@
 {
+  "name": "crm-jarvis",
+  "version": "1.0.0",
+  "description": "CRM JARVIS - AI CRM Autopilot",
+  "main": "jarvis-backend-real.js",
+  "scripts": {
+    "start": "node jarvis-backend-real.js",
+    "dev": "node jarvis-backend-real.js"
+  },
+  "author": "Jahangeer Shaik",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.18.1",
     "body-parser": "^2.3.0",
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "uuid": "^14.0.1"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "uuid": "^11.1.0"
   }
 }
