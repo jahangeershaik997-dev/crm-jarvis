@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.2.10191" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive">
+  <SolutionManifest>
+    <UniqueName>pbi_236228</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="PBI_236228" languagecode="1033"/>
+    </LocalizedNames>
+    <Descriptions/>
+    <Version>1.0.0.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>trial</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Trial Publisher" languagecode="1033"/>
+      </LocalizedNames>
+      <Descriptions/>
+      <EMailAddress xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+      <SupportingWebsiteUrl xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+      <CustomizationPrefix>trial</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>10000</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="61" schemaName="trial_completeisequestionnaire_main" behavior="0" />
+    </RootComponents>
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

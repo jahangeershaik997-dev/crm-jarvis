@@ -1,0 +1,24 @@
+# Node
+node_modules/
+
+# Generated files
+generated/
+output/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# PowerShell history
+*.ps1xml

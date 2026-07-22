@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS - CRM Autopilot Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .systems-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .system-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .system-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .system-desc {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        
+        .system-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-live {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-building {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .progress-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .step {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .step-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            color: white;
+            font-size: 12px;
+        }
+        
+        .step-completed .step-icon {
+            background: #28a745;
+        }
+        
+        .step-pending .step-icon {
+            background: #ccc;
+        }
+        
+        .step-in-progress .step-icon {
+            background: #667eea;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🤖 JARVIS</div>
+            <div class="tagline">AI-Powered CRM Autopilot Platform - Build D365 Systems in Minutes</div>
+        </header>
+        
+        <div class="dashboard">
+            <!-- Left Panel: Build New System -->
+            <div class="panel">
+                <h2>Build New System</h2>
+                
+                <div id="message" class="message"></div>
+                
+                <div class="form-group">
+                    <label for="requirement">System Requirement:</label>
+                    <textarea id="requirement" placeholder="Describe your D365 system requirement...
+
+Example:
+Create a table called Afrin with columns:
+- name (text)
+- email (text)
+- phone (text)"></textarea>
+                </div>
+                
+                <button id="buildBtn" onclick="buildSystem()">🚀 Build System</button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #f0f4ff; border-radius: 5px; font-size: 12px; color: #666;">
+                    <strong>Time Saved:</strong> 95%
+                    <br><strong>Cost Saved:</strong> 99%
+                    <br><strong>Quality:</strong> Production-Ready
+                </div>
+            </div>
+            
+            <!-- Right Panel: Dashboard Stats -->
+            <div class="panel">
+                <h2>Dashboard</h2>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalSystems">0</div>
+                        <div class="stat-label">Systems Built</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="liveSystems">0</div>
+                        <div class="stat-label">Live Systems</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalTables">0</div>
+                        <div class="stat-label">Total Tables</div>
+                    </div>
+                </div>
+                
+                <div id="deploymentProgress" style="display: none;">
+                    <h3 style="margin-bottom: 15px; color: #333;">Deployment Progress</h3>
+                    
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text"><span id="progressPercent">0</span>%</div>
+                    </div>
+                    
+                    <div id="stepsList"></div>
+                </div>
+                
+                <div id="systemsList" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #333;">Recent Systems</h3>
+                    <div class="systems-grid" id="systems"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let currentDeploymentId = null;
+        let deploymentInterval = null;
+        
+        // Mock user
+        const userId = 'user-' + Math.random().toString(36).substr(2, 9);
+        
+        async function buildSystem() {
+            const requirement = document.getElementById('requirement').value;
+            
+            if (!requirement.trim()) {
+                showMessage('Please enter a system requirement', 'error');
+                return;
+            }
+            
+            const buildBtn = document.getElementById('buildBtn');
+            buildBtn.disabled = true;
+            buildBtn.textContent = '⏳ Building...';
+            
+            try {
+                console.log('Sending request to:', `${API_URL}/jarvis/build-real`);
+                
+                const response = await fetch(`${API_URL}/jarvis/build-real`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ requirement, userId })
+                });
+                
+                const data = await response.json();
+                console.log('Response:', data);
+                
+                if (data.success) {
+                    currentDeploymentId = data.deploymentId;
+                    document.getElementById('requirement').value = '';
+                    showMessage('✅ Build started: ' + data.systemName, 'success');
+                    
+                    document.getElementById('deploymentProgress').style.display = 'block';
+                    trackDeployment();
+                } else {
+                    showMessage('❌ ' + (data.error || 'Unknown error'), 'error');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showMessage('❌ Error: ' + error.message, 'error');
+            } finally {
+                buildBtn.disabled = false;
+                buildBtn.textContent = '🚀 Build System';
+            }
+        }
+        
+        async function trackDeployment() {
+            if (deploymentInterval) clearInterval(deploymentInterval);
+            
+            deploymentInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_URL}/deployment/${currentDeploymentId}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const deployment = data.deployment;
+                        
+                        document.getElementById('progressFill').style.width = deployment.progress + '%';
+                        document.getElementById('progressPercent').textContent = deployment.progress;
+                        
+                        let stepsHtml = '';
+                        deployment.steps.forEach(step => {
+                            const statusClass = step.status.replace(/_/g, '-');
+                            const icon = step.status === 'completed' ? '✓' : step.status === 'in_progress' ? '●' : '○';
+                            stepsHtml += `
+                                <div class="step step-${statusClass}">
+                                    <div class="step-icon">${icon}</div>
+                                    <div>${step.name}</div>
+                                </div>
+                            `;
+                        });
+                        document.getElementById('stepsList').innerHTML = stepsHtml;
+                        
+                        if (deployment.status === 'completed') {
+                            clearInterval(deploymentInterval);
+                            showMessage('🎉 System deployed successfully to D365!', 'success');
+                            loadSystems();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Tracking error:', error);
+                }
+            }, 1000);
+        }
+        
+        async function loadSystems() {
+            try {
+                const response = await fetch(`${API_URL}/dashboard/systems/${userId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalSystems').textContent = data.totalSystems;
+                    document.getElementById('liveSystems').textContent = data.liveSystems || 0;
+                    document.getElementById('totalTables').textContent = data.totalTables || 0;
+                    
+                    let systemsHtml = '';
+                    if (data.systems && data.systems.length > 0) {
+                        data.systems.forEach(system => {
+                            const statusClass = system.status === 'live' ? 'status-live' : 'status-building';
+                            const statusText = system.status === 'live' ? 'LIVE' : 'BUILDING';
+                            
+                            systemsHtml += `
+                                <div class="system-card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                        <div>
+                                            <div class="system-name">${system.name}</div>
+                                            <div class="system-desc">${system.description}</div>
+                                            <div class="system-stats">
+                                                <span>📊 ${system.tables || 0} Tables</span>
+                                                <span>📋 ${system.rules || 0} Rules</span>
+                                                <span>🔄 ${system.flows || 0} Flows</span>
+                                            </div>
+                                        </div>
+                                        <span class="status-badge ${statusClass}">${statusText}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        systemsHtml = '<p style="color: #999;">No systems built yet</p>';
+                    }
+                    
+                    document.getElementById('systems').innerHTML = systemsHtml;
+                }
+            } catch (error) {
+                console.error('Load error:', error);
+            }
+        }
+        
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = 'message ' + type;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageEl.className = 'message';
+                }, 5000);
+            }
+        }
+        
+        // Load systems on page load
+        window.addEventListener('load', loadSystems);
+    </script>
+</body>
+</html>
