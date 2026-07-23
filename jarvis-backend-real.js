@@ -9,7 +9,8 @@ const { exec } = require('child_process');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
-const { getConnectedD365Account } = require('./get-connected-account');
+const D365Connector = require('./d365-connector');
+const d365 = new D365Connector();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -289,7 +290,7 @@ Return this JSON structure exactly:
 // NEW ENDPOINT - Get Connected Account
 app.get('/api/d365/account', async (req, res) => {
     try {
-        const account = await getConnectedD365Account();
+        const account = await d365.getWhoAmI();
         res.json(account);
     } catch (error) {
         res.status(500).json({ 
