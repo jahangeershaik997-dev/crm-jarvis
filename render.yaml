@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: crm-jarvis
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node jarvis-backend-real.js
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: JARVIS_SECRET_KEY
+        generateValue: true
+      - key: NODE_ENV
+        value: production

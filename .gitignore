@@ -22,3 +22,8 @@ Desktop.ini
 
 # PowerShell history
 *.ps1xml
+
+# Credentials & cache files
+config/credentials.json
+config/token-cache.json
+logs/

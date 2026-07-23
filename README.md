@@ -6,6 +6,11 @@ Convert business requirements → Production-ready Power Platform systems in min
 
 ---
 
+> [!NOTE]
+> Looking for the custom table provisioning scripts and credential configurations? Check out the [JARVIS Dataverse Table Creator Setup Guide](file:///c:/CRM-Jarvis/DATAVERSE_CREATOR_README.md).
+
+---
+
 ## **What is JARVIS?**
 
 JARVIS is an end-to-end automation platform that:
