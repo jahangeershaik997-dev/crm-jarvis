@@ -219,6 +219,10 @@
             const [deploymentData, setDeploymentData] = useState(null);
             const [isBuilding, setIsBuilding] = useState(false);
 
+            // Connected D365 Account State
+            const [d365Account, setD365Account] = useState(null);
+            const [loadingAccount, setLoadingAccount] = useState(true);
+
             // Notification Toasts
             const [toasts, setToasts] = useState([]);
 
@@ -265,8 +269,21 @@
                 }
             };
 
+            const fetchConnectedAccount = async () => {
+                try {
+                    const res = await fetch('/api/d365/account');
+                    const data = await res.json();
+                    setD365Account(data);
+                } catch (error) {
+                    console.error('Error fetching account:', error);
+                } finally {
+                    setLoadingAccount(false);
+                }
+            };
+
             useEffect(() => {
                 fetchDashboardData();
+                fetchConnectedAccount();
             }, []);
 
             // Handle Build Submission
@@ -406,10 +423,22 @@
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-darkBorder bg-gray-50 dark:bg-zinc-800 text-xs font-semibold text-gray-600 dark:text-zinc-300">
-                                    <Icons.Globe />
-                                    <span>Dynamics 365 Connected</span>
-                                </div>
+                                {loadingAccount ? (
+                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-200 dark:border-darkBorder bg-gray-50/50 dark:bg-zinc-800/30 text-[11px] font-semibold text-gray-400">
+                                        <Icons.LoadingSpinner className="w-3.5 h-3.5" />
+                                        <span>Checking D365...</span>
+                                    </div>
+                                ) : d365Account && d365Account.connected ? (
+                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 dark:border-emerald-500/30 bg-emerald-500/5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                                        <span>{d365Account.username || 'Connected'}</span>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-rose-500/20 dark:border-rose-500/30 bg-rose-500/5 text-[11px] font-semibold text-rose-600 dark:text-rose-400">
+                                        <div className="w-1.5 h-1.5 bg-rose-500 rounded-full"></div>
+                                        <span>Not Connected</span>
+                                    </div>
+                                )}
 
                                 <button 
                                     onClick={toggleTheme}

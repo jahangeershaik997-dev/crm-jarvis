@@ -9,6 +9,7 @@ const { exec } = require('child_process');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
+const { getConnectedD365Account } = require('./get-connected-account');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -281,6 +282,19 @@ Return this JSON structure exactly:
             error: 'Build failed',
             details: error.message,
             deploymentId
+        });
+    }
+});
+
+// NEW ENDPOINT - Get Connected Account
+app.get('/api/d365/account', async (req, res) => {
+    try {
+        const account = await getConnectedD365Account();
+        res.json(account);
+    } catch (error) {
+        res.status(500).json({ 
+            connected: false, 
+            error: error.message 
         });
     }
 });
