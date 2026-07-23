@@ -288,7 +288,49 @@ Return this JSON structure exactly:
 });
 
 // NEW ENDPOINT - Get Connected Account
-app.get('/api/d365/account', async (req, res) => {
+app.get('/api/d365/account',// ========== D365 DEBUG ENDPOINT ==========
+app.get('/api/d365/debug-token', async (req, res) => {
+    try {
+        const axios = require('axios');
+        
+        console.log('=== D365 Token Debug ===');
+        console.log('CLIENT_ID:', process.env.CLIENT_ID);
+        console.log('CLIENT_SECRET length:', process.env.CLIENT_SECRET?.length);
+        console.log('TENANT_ID:', process.env.TENANT_ID);
+        console.log('D365_URL:', process.env.D365_URL);
+        console.log('===');
+        
+        const tokenUrl = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
+        console.log('Token URL:', tokenUrl);
+        
+        const response = await axios.post(tokenUrl, {
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+            scope: `${process.env.D365_URL}/.default`,
+            grant_type: 'client_credentials'
+        });
+        
+        console.log('Token obtained successfully!');
+        res.json({
+            success: true,
+            token: response.data.access_token.substring(0, 20) + '...',
+            expiresIn: response.data.expires_in
+        });
+        
+    } catch (error) {
+        console.error('Token Request Failed');
+        console.error('Status:', error.response?.status);
+        console.error('Data:', error.response?.data);
+        console.error('Message:', error.message);
+        
+        res.status(500).json({
+            success: false,
+            status: error.response?.status,
+            error: error.response?.data || error.message
+        });
+    }
+});
+// ========== END D365 DEBUG ========== async (req, res) => {
     try {
         const account = await d365.getWhoAmI();
         res.json(account);
